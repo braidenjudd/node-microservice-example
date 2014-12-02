@@ -13,15 +13,16 @@ connection.on('ready', function() {
             queue.bind('logs', '');
 
             queue.subscribe(function(msg) {
+            	// parse request
                 var need = JSON.parse(msg.data);
 
                 // if this is a request, propose a solution
                 if (need.type === 'request') {
                     var solution_msg = {
                     	id: need.id,
-                        message: 'This is my good number',
+                        message: 'This is my crap number',
                         type: 'solution',
-                        solution: 100
+                        solution: 1
                     };
 
                     // Publish our solution to the bus
