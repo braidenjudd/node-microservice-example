@@ -9,7 +9,7 @@ connection.on('ready', function() {
         type: 'fanout',
         autoDelete: false
     }, function(exchange) {
-        connection.queue('tmp-' + Math.random(), {exclusive: true}, function(queue) {
+        connection.queue('tmp-' + Math.random(), { exclusive: true }, function(queue) {
             queue.bind('logs', '');
 
             queue.subscribe(function(msg) {
