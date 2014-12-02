@@ -9,15 +9,34 @@ var connection = amqp.createConnection({
 var message = process.argv.slice(2).join(' ') || 'I need a number';
 
 connection.on('ready', function(){
-    connection.exchange('logs', { type: 'fanout', autoDelete: false }, function(exchange) {
-    	var msg = {
-    		id: uuid.v1(),
-    		message: message,
-    		type: 'request',
-    		timeout: 3000
-    	};
-        exchange.publish('', JSON.stringify(msg));
-        console.log(" [x] Sent %s", JSON.stringify(msg));
-        amqp_hacks.safeEndConnection(connection);
-    });
+	connection.queue('my-queue', function (q) {
+	// Catch all messages
+		q.bind('rapids', '#');
+		console.log('hi');
+
+	// Receive messages
+		q.subscribe(function (message) {
+	// Print messages to stdout
+			console.log(message.data.toString('utf-8'));
+		});
+	});
+
+
+
+	//queue.bind('rapids', '#', function () {
+		//console.log("I bound");
+	//});
+
+
+    // connection.exchange('rapid', { type: 'fanout', autoDelete: false }, function(exchange) {
+    // 	var msg = {
+    // 		id: uuid.v1(),
+    // 		message: message,
+    // 		type: 'request',
+    // 		timeout: 3000
+    // 	};
+    //     exchange.publish('', JSON.stringify(msg));
+    //     console.log(" [x] Sent %s", JSON.stringify(msg));
+    //     amqp_hacks.safeEndConnection(connection);
+    // });
 });

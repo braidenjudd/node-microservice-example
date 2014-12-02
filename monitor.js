@@ -5,15 +5,21 @@ var connection = amqp.createConnection({
 });
 
 connection.on('ready', function() {
-    connection.exchange('logs', {
+    connection.exchange('rapids2', {
     	type: 'fanout',
         autoDelete: false
     }, function(exchange) {
     	connection.queue('tmp-' + Math.random(), {exclusive: true}, function(queue) {
-            queue.bind('logs', '');
+            queue.bind('rapids2', '');
             console.log(' [*] Waiting for logs. To exit press CTRL+C')
 
             queue.subscribe(function(msg){
+
+
+
+
+
+                
                 console.log(" [x] %s", msg.data.toString('utf-8'));
             });
         })

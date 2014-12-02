@@ -9,6 +9,10 @@ var database = {
 
 };
 
+var bestSolution = function (id) {
+	return 'The Best Solution for [' + id + '] is ' + _.max(database[id].solutions);
+};
+
 connection.on('ready', function() {
     connection.exchange('logs', {
         type: 'fanout',
@@ -22,7 +26,7 @@ connection.on('ready', function() {
 
                 // if this is a request, propose a solution
                 if (message.type === 'solution') {
-                	if(message.id in database) {
+                	if (message.id in database) {
                 		database[message.id].solutions.push(message.solution);
                 		console.log('Found the another solution');
                 	} else {
@@ -39,12 +43,7 @@ connection.on('ready', function() {
                 		}, message.timeout || 3000);
                 	}
                 }
-                
             });
         })
     });
 });
-
-var bestSolution = function (id) {
-	return 'The Best Solution for [' + id + '] is ' + _.max(database[id].solutions);
-};

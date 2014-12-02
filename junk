@@ -1,0 +1,26 @@
+var amqp = require('amqp');
+var amqp_hacks = require('./amqp-hacks');
+var uuid = require('uuid');
+
+var connection = amqp.createConnection({
+	url: "amqp://donald:donald@192.168.1.3:5672/donald"
+});
+
+connection.on('ready', function(){
+	connection.queue('my-queue', function (q) {
+		q.bind('rapids', '#');
+
+		q.subscribe(function (msg) {
+			var message = JSON.parse(msg.data);
+
+			
+
+
+
+
+
+
+			console.log(message.data.toString('utf-8'));
+		});
+	});
+});
