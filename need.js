@@ -13,7 +13,8 @@ connection.on('ready', function(){
     	var msg = {
     		id: uuid.v1(),
     		message: message,
-    		type: 'request'
+    		type: 'request',
+    		timeout: 3000
     	};
         exchange.publish('', JSON.stringify(msg));
         console.log(" [x] Sent %s", JSON.stringify(msg));

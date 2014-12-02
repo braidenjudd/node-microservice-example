@@ -4,6 +4,10 @@ var connection = amqp.createConnection({
     url: "amqp://donald:donald@192.168.1.3:5672/donald"
 });
 
+var delay = function random (low, high) {
+    return Math.round(Math.random() * (high - low) + low);
+};
+
 connection.on('ready', function() {
     connection.exchange('logs', {
         type: 'fanout',
@@ -25,8 +29,11 @@ connection.on('ready', function() {
                     };
 
                     // Publish our solution to the bus
-                    exchange.publish('', JSON.stringify(solution_msg));
-                    console.log(" [PROPOSED SOLUTION] ", solution_msg.solution);
+                    var delay_time = delay(0, 6000);
+                    setTimeout(function() {
+                		exchange.publish('', JSON.stringify(solution_msg));
+                    	console.log(" [PROPOSED SOLUTION] ", solution_msg.solution, ' in ', delay_time);
+                	}, delay_time);
                 }
             });
         })
